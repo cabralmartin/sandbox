@@ -1,0 +1,16 @@
+name: Respond to approved
+
+on:
+  status:
+    state: 'success'
+
+jobs:
+  check-state:
+    if: github.event.status.branches.length == 1 && github.event.status.branches[0].name == 'provider/**'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comment
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{github.event.pull_request.number}}
+          body: "Change for master is approved!! Merge it carefully."
